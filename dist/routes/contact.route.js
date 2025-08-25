@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const contact_service_1 = require("../services/contact.service");
+const contact_controller_1 = require("../controllers/contact.controller");
+const validate_middleware_1 = require("../middlewares/validate.middleware");
+const contact_validator_1 = require("../validators/contact.validator");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const auth_service_1 = require("../services/auth.service");
+const router = (0, express_1.Router)();
+const contactService = new contact_service_1.ContactService();
+const contactController = (0, contact_controller_1.createContactController)(contactService);
+const authService = new auth_service_1.AuthService();
+router.post('/', (0, validate_middleware_1.validateBody)(contact_validator_1.contactMessageSchema), contactController.create);
+router.get('/', (0, auth_middleware_1.adminAuthMiddleware)(authService), contactController.getAll);
+router.get('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), contactController.getById);
+router.delete('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), contactController.delete);
+router.patch('/:id/read', (0, auth_middleware_1.adminAuthMiddleware)(authService), contactController.markAsRead);
+exports.default = router;
+//# sourceMappingURL=contact.route.js.map

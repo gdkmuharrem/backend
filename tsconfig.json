@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",          // Node.js ortamı için commonjs
+    "rootDir": "./src",            // Kaynak dosyalar
+    "outDir": "./dist",            // Derlenen js dosyaları
+    "strict": true,
+    "esModuleInterop": true,       // import uyumluluğu için önemli
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types","./types"]              // Node.js tiplerini dahil et
+  },
+  "include": ["src","types"],
+  "exclude": ["node_modules", "dist"]
+}

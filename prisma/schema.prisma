@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//
+// --- ADMIN YÖNETİMİ ---
+//
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  logs Log[]
+}
+
+//
+// --- İLETİŞİM FORMU ---
+//
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false)
+}
+
+//
+// --- BİLDİRİM ---
+//
+model Notification {
+  id         String   @id @default(uuid())
+  type       String   // Örn: 'message', 'log', 'alert' gibi bildirim türleri
+  title      String
+  body       String?  // Opsiyonel detay
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  // İlgili diğer entity ile ilişki (örn: mesaj id) saklamak için opsiyonel
+  relatedId  String?  
+
+  // İstersen kullanıcıya özel bildirimler için userId eklenebilir (şimdilik admin sabit)
+}
+
+//
+// --- KATEGORİ ---
+//
+model Category {
+  id          String    @id @default(cuid())
+  isActive    Boolean   @default(true)
+  order       Int       @default(0)
+  parentId    String?
+  parent      Category? @relation("CategoryChildren", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryChildren")
+  name_tr     String
+  name_en     String
+  slug_tr     String
+  slug_en     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+//
+// --- ÜRÜN TABLOSU ---
+//
+model Product {
+  id          String        @id @default(cuid())
+  name_tr     String
+  name_en     String
+  description_tr String?
+  description_en String?
+  price       Float
+  categoryId  String
+  category    Category      @relation(fields: [categoryId], references: [id])
+  images      ProductImage[]
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  reviews     Review[]
+}
+
+//
+// --- ÜRÜN RESİMLERİ TABLOSU ---
+//
+model ProductImage {
+  id              String    @id @default(cuid())
+  productId       String
+  product         Product   @relation(fields: [productId], references: [id])
+  originalName    String
+  storedName      String
+  filePath        String     // Örn: uploads/products/xyz123.png
+  createdAt       DateTime   @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+//
+// --- YORUMLAR TABLOSU ---
+//
+model Review {
+  id         String    @id @default(cuid())
+  name       String
+  email      String
+  content    String
+  approved   Boolean   @default(false)
+  isActive   Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  productId  String?
+  product    Product?  @relation(fields: [productId], references: [id])
+}
+
+//
+// --- HAKKIMIZDA TABLOSU ---
+//
+model About {
+  id         String        @id @default(cuid())
+  title_tr   String
+  title_en   String
+  contents   Json
+  images     AboutImage[]  // Birden fazla resim ilişkisi
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+//
+// --- HAKKIMIZDA RESİMLERİ ---
+//
+model AboutImage {
+  id            String   @id @default(cuid())
+  aboutId       String
+  about         About    @relation(fields: [aboutId], references: [id])
+  originalName  String
+  storedName    String
+  filePath      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+//
+// --- VİZYON TABLOSU ---
+//
+model Vision {
+  id         String        @id @default(cuid())
+  title_tr   String
+  title_en   String
+  contents   Json
+  images     VisionImage[]  // Birden fazla resim ilişkisi
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+//
+// --- VİZYON RESİMLERİ ---
+//
+model VisionImage {
+  id            String   @id @default(cuid())
+  visionId      String
+  vision        Vision    @relation(fields: [visionId], references: [id])
+  originalName  String
+  storedName    String
+  filePath      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+//
+// --- MİSYON TABLOSU ---
+//
+model Mision {
+  id         String        @id @default(cuid())
+  title_tr   String
+  title_en   String
+  contents   Json
+  images     MisionImage[]  // Birden fazla resim ilişkisi
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+//
+// --- MİSYON RESİMLERİ ---
+//
+model MisionImage {
+  id            String   @id @default(cuid())
+  misionId      String
+  mision        Mision    @relation(fields: [misionId], references: [id])
+  originalName  String
+  storedName    String
+  filePath      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+//
+// --- LOG TABLOSU ---
+//
+model Log {
+  id          String   @id @default(cuid())
+
+  // İlişkili admin (varsa)
+  userId      String?         
+  admin       Admin?   @relation(fields: [userId], references: [id])
+
+  // Ziyaretçiye ait bilgiler
+  visitorId   String?         // Cookie veya localStorage üzerinden frontend'de üretilecek benzersiz ID
+  ip          String
+  country     String?         // IP üzerinden alınacak
+  city        String?         // IP üzerinden alınacak
+  userAgent   String?         // Tarayıcı bilgisi
+
+  // Etkileşim bilgileri
+  action      String          // "visit_home", "click_button", "submit_form" gibi
+  page        String?         // Örn: "/products/123"
+  method      String?         // GET, POST, PUT, DELETE
+  referer     String?         // Nereden geldi
+  status      String          // success | fail | warning
+
+  // Detaylı JSON verisi
+  details     Json?           // Scroll oranı, süre, buton ismi gibi detaylar
+
+  // Zaman bilgisi
+  createdAt   DateTime @default(now())
+}

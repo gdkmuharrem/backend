@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const notification_service_1 = require("../services/notification.service");
+const notification_controller_1 = require("../controllers/notification.controller");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const auth_service_1 = require("../services/auth.service");
+const validate_middleware_1 = require("../middlewares/validate.middleware");
+const notification_validator_1 = require("../validators/notification.validator");
+const router = (0, express_1.Router)();
+const notificationService = new notification_service_1.NotificationService();
+const notificationController = (0, notification_controller_1.createNotificationController)(notificationService);
+const authService = new auth_service_1.AuthService();
+router.use((0, auth_middleware_1.adminAuthMiddleware)(authService));
+router.post('/', (0, validate_middleware_1.validateBody)(notification_validator_1.notificationCreateSchema), notificationController.create);
+router.get('/', notificationController.getAll);
+router.get('/count', notificationController.countUnread);
+router.patch('/:id/read', notificationController.markAsRead);
+router.delete('/:id', notificationController.delete);
+exports.default = router;
+//# sourceMappingURL=notification.route.js.map
