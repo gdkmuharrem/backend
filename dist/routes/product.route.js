@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const product_service_1 = require("../services/product.service");
+const product_controller_1 = require("../controllers/product.controller");
+const validate_middleware_1 = require("../middlewares/validate.middleware");
+const product_validator_1 = require("../validators/product.validator");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const auth_service_1 = require("../services/auth.service");
+const router = (0, express_1.Router)();
+const productService = new product_service_1.ProductService();
+const productController = (0, product_controller_1.createProductController)(productService);
+const authService = new auth_service_1.AuthService();
+router.post('/', (0, auth_middleware_1.adminAuthMiddleware)(authService), (0, validate_middleware_1.validateBody)(product_validator_1.productSchema), productController.create);
+router.get('/', (0, auth_middleware_1.adminAuthMiddleware)(authService), productController.getAll);
+router.get('/category/:categoryId', (0, auth_middleware_1.adminAuthMiddleware)(authService), productController.getByCategory);
+router.get('/search', (0, auth_middleware_1.adminAuthMiddleware)(authService), productController.search);
+router.get('/paginate', (0, auth_middleware_1.adminAuthMiddleware)(authService), productController.paginate);
+router.get('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), productController.getById);
+router.patch('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), productController.update);
+router.delete('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), productController.delete);
+router.post('/bulk-delete', (0, auth_middleware_1.adminAuthMiddleware)(authService), productController.bulkDelete);
+exports.default = router;
+//# sourceMappingURL=product.route.js.map

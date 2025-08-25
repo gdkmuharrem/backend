@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const about_service_1 = require("../services/about.service");
+const about_controller_1 = require("../controllers/about.controller");
+const validate_middleware_1 = require("../middlewares/validate.middleware");
+const about_validator_1 = require("../validators/about.validator");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const auth_service_1 = require("../services/auth.service");
+const router = (0, express_1.Router)();
+const aboutService = new about_service_1.AboutService();
+const aboutController = (0, about_controller_1.createAboutController)(aboutService);
+const authService = new auth_service_1.AuthService();
+router.post('/', (0, auth_middleware_1.adminAuthMiddleware)(authService), (0, validate_middleware_1.validateBody)(about_validator_1.aboutSchema), aboutController.create);
+router.get('/', (0, auth_middleware_1.adminAuthMiddleware)(authService), aboutController.getAll);
+router.get('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), aboutController.getById);
+router.patch('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), aboutController.update);
+router.delete('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), aboutController.delete);
+exports.default = router;
+//# sourceMappingURL=about.route.js.map
