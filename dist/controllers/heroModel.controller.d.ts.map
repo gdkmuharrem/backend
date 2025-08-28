@@ -1,0 +1,1 @@
+{"version":3,"file":"heroModel.controller.d.ts","sourceRoot":"","sources":["../../src/controllers/heroModel.controller.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAC5C,OAAO,EAAE,iBAAiB,EAAE,MAAM,0CAA0C,CAAC;AAG7E,wBAAgB,yBAAyB,CAAC,gBAAgB,EAAE,iBAAiB;kBAErD,OAAO,OAAO,QAAQ;qBAcnB,OAAO,OAAO,QAAQ;kBAYzB,OAAO,OAAO,QAAQ;EAmB7C"}

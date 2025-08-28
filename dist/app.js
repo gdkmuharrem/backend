@@ -23,6 +23,9 @@ const visionImage_route_1 = __importDefault(require("./routes/visionImage.route"
 const mision_route_1 = __importDefault(require("./routes/mision.route"));
 const misionImage_route_1 = __importDefault(require("./routes/misionImage.route"));
 const log_route_1 = __importDefault(require("./routes/log.route"));
+const hero_route_1 = __importDefault(require("./routes/hero.route"));
+const heroImage_route_1 = __importDefault(require("./routes/heroImage.route"));
+const heroModel_route_1 = __importDefault(require("./routes/heroModel.route"));
 const public_category_route_1 = __importDefault(require("./routes/public/public.category.route"));
 const public_product_route_1 = __importDefault(require("./routes/public/public.product.route"));
 const public_productImage_route_1 = __importDefault(require("./routes/public/public.productImage.route"));
@@ -33,6 +36,9 @@ const public_misionImage_routes_1 = __importDefault(require("./routes/public/pub
 const public_vision_routes_1 = __importDefault(require("./routes/public/public.vision.routes"));
 const public_visionImage_routes_1 = __importDefault(require("./routes/public/public.visionImage.routes"));
 const public_contact_routes_1 = __importDefault(require("./routes/public/public.contact.routes"));
+const public_hero_route_1 = __importDefault(require("./routes/public/public.hero.route"));
+const public_heroImage_route_1 = __importDefault(require("./routes/public/public.heroImage.route"));
+const public_heroModel_route_1 = __importDefault(require("./routes/public/public.heroModel.route"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, helmet_1.default)({
@@ -64,6 +70,9 @@ app.use('/vision-image', visionImage_route_1.default);
 app.use('/mision', mision_route_1.default);
 app.use('/mision-image', misionImage_route_1.default);
 app.use('/logs', log_route_1.default);
+app.use('/hero', hero_route_1.default);
+app.use('/hero-image', heroImage_route_1.default);
+app.use('/hero-model', heroModel_route_1.default);
 app.use('/categories/public', public_category_route_1.default);
 app.use('/products/public', public_product_route_1.default);
 app.use('/product-images/public', public_productImage_route_1.default);
@@ -74,6 +83,9 @@ app.use('/mision-images/public', public_misionImage_routes_1.default);
 app.use('/visions/public', public_vision_routes_1.default);
 app.use('/vision-images/public', public_visionImage_routes_1.default);
 app.use('/contacts/public', public_contact_routes_1.default);
+app.use('/heros/public', public_hero_route_1.default);
+app.use('/hero-images/public', public_heroImage_route_1.default);
+app.use('/hero-models/public', public_heroModel_route_1.default);
 app.get('/', (req, res) => {
     res.send('Mum ve Hediyelik Backend çalışıyor');
 });

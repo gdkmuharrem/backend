@@ -225,3 +225,43 @@ model Log {
   // Zaman bilgisi
   createdAt   DateTime @default(now())
 }
+
+//
+// --- HERO (Tekil Kayıt) ---
+//
+model Hero {
+  id          String       @id @default(cuid())
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  images      HeroImage[]
+  models      Hero3DModel[]
+}
+
+//
+// --- HERO RESİMLERİ ---
+//
+model HeroImage {
+  id            String   @id @default(cuid())
+  heroId        String
+  hero          Hero     @relation(fields: [heroId], references: [id], onDelete: Cascade)
+  originalName  String
+  storedName    String
+  filePath      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+//
+// --- HERO 3D MODELLERİ ---
+//
+model Hero3DModel {
+  id            String   @id @default(cuid())
+  heroId        String
+  hero          Hero     @relation(fields: [heroId], references: [id], onDelete: Cascade)
+  originalName  String
+  storedName    String
+  filePath      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

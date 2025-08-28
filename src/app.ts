@@ -19,6 +19,10 @@ import visionImageRoutes from './routes/visionImage.route';
 import misionRoutes from './routes/mision.route';
 import misionImageRoutes from './routes/misionImage.route';
 import logRoutes from './routes/log.route';
+import heroRoutes from './routes/hero.route';
+import heroImageRoutes from './routes/heroImage.route';
+import heroModelRoutes from './routes/heroModel.route';
+
 import publicCategoryRoutes from './routes/public/public.category.route';
 import publicProductRoutes from './routes/public/public.product.route';
 import publicProductImageRoutes from './routes/public/public.productImage.route';
@@ -29,7 +33,9 @@ import publicMisionImageRoutes from './routes/public/public.misionImage.routes';
 import publicVisionRoutes from './routes/public/public.vision.routes';
 import publicVisionImageRoutes from './routes/public/public.visionImage.routes';
 import publicContactRoutes from './routes/public/public.contact.routes';
-
+import publicHeroRoutes from './routes/public/public.hero.route';
+import publicHeroImageRoutes from './routes/public/public.heroImage.route';
+import publicHeroModelRoutes from './routes/public/public.heroModel.route';
 
 dotenv.config();
 
@@ -72,6 +78,10 @@ app.use('/vision-image', visionImageRoutes);
 app.use('/mision', misionRoutes);
 app.use('/mision-image', misionImageRoutes);
 app.use('/logs', logRoutes);
+app.use('/hero', heroRoutes);
+app.use('/hero-image', heroImageRoutes);
+app.use('/hero-model', heroModelRoutes);
+
 app.use('/categories/public', publicCategoryRoutes);
 app.use('/products/public', publicProductRoutes);
 app.use('/product-images/public', publicProductImageRoutes);
@@ -82,6 +92,9 @@ app.use('/mision-images/public', publicMisionImageRoutes);
 app.use('/visions/public', publicVisionRoutes);
 app.use('/vision-images/public', publicVisionImageRoutes);
 app.use('/contacts/public', publicContactRoutes);
+app.use('/heros/public' , publicHeroRoutes);
+app.use('/hero-images/public' , publicHeroImageRoutes);
+app.use('/hero-models/public' , publicHeroModelRoutes);
 
 
 app.get('/', (req, res) => {

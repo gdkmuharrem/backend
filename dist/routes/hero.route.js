@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const hero_service_1 = require("../services/hero.service");
+const hero_controller_1 = require("../controllers/hero.controller");
+const validate_middleware_1 = require("../middlewares/validate.middleware");
+const hero_validator_1 = require("../validators/hero.validator");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const auth_service_1 = require("../services/auth.service");
+const router = (0, express_1.Router)();
+const heroService = new hero_service_1.HeroService();
+const heroController = (0, hero_controller_1.createHeroController)(heroService);
+const authService = new auth_service_1.AuthService();
+router.post('/', (0, auth_middleware_1.adminAuthMiddleware)(authService), (0, validate_middleware_1.validateBody)(hero_validator_1.heroSchema), heroController.create);
+router.get('/', (0, auth_middleware_1.adminAuthMiddleware)(authService), heroController.getAll);
+router.get('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), heroController.getById);
+router.patch('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), heroController.update);
+router.delete('/:id', (0, auth_middleware_1.adminAuthMiddleware)(authService), heroController.delete);
+exports.default = router;
+//# sourceMappingURL=hero.route.js.map
